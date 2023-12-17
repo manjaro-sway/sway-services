@@ -4,16 +4,24 @@ _pkgname=sway-services
 pkgname=${_pkgname}-git
 pkgdesc="Collection of sway and friends systemd unit files"
 pkgver=r32.e0d720e
-pkgrel=1
+pkgrel=2
 arch=(any)
 depends=('sway')
 makedepends=('meson')
 optdepends=('python3: for swayidle.service' 'python-yaml: for swayidle.service' 'mako' 'swayidle' 'kanshi')
 url="https://github.com/xdbob/sway-services"
 _commit="e0d720e9651a240e06d9215a569cac153b5e11f0"
-source=("git+${url}#commit=$_commit")
+source=(
+	"git+${url}#commit=$_commit"
+	"https://github.com/xdbob/sway-services/pull/28.patch"
+)
 license=('MIT')
-md5sums=('SKIP')
+md5sums=('SKIP' 'SKIP')
+
+prepare() {
+	cd "$srcdir/${_pkgname}" || exit
+	patch -p1 -i "$srcdir/28.patch"
+}
 
 pkgver() {
 	cd "$srcdir/${_pkgname}" || exit
