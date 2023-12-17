@@ -1,0 +1,6 @@
+*
+!PKGBUILD
+!.github
+!.github/**/*
+!.install
+!.gitignore
