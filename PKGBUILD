@@ -1,10 +1,10 @@
 # Maintainer: Antoine Damhet <antoine.damhet@lse.epita.fr>
 
 _pkgname=sway-services
-pkgname=${_pkgname}-git
+pkgname=${_pkgname}
 pkgdesc="Collection of sway and friends systemd unit files"
 pkgver=r32.e0d720e
-pkgrel=2
+pkgrel=3
 arch=(any)
 depends=('sway')
 makedepends=('meson')
