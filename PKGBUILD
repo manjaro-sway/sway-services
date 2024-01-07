@@ -4,7 +4,7 @@ _pkgname=sway-services
 pkgname=${_pkgname}
 pkgdesc="Collection of sway and friends systemd unit files"
 pkgver=r32.e0d720e
-pkgrel=3
+pkgrel=4
 arch=(any)
 depends=('sway')
 makedepends=('meson')
@@ -17,6 +17,8 @@ source=(
 )
 license=('MIT')
 md5sums=('SKIP' 'SKIP')
+provides=('sway-services')
+conflicts=('sway-services-git')
 
 prepare() {
 	cd "$srcdir/${_pkgname}" || exit
