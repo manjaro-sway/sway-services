@@ -4,7 +4,7 @@ _pkgname=sway-services
 pkgname=${_pkgname}
 pkgdesc="Collection of sway and friends systemd unit files"
 pkgver=r33.e3d9b8b
-pkgrel=3
+pkgrel=4
 arch=(any)
 depends=('sway' 'python3' 'python-yaml' 'swayidle')
 makedepends=('meson')
@@ -34,5 +34,10 @@ build() {
 
 package() {
 	DESTDIR="${pkgdir}" ninja -C "${srcdir}/build" install
+	# sway >=1.12 ships its own /usr/lib/systemd/user/sway-session.target,
+	# which collides with the copy from upstream sway-services. Drop ours and
+	# let the sway package own it; sway-session-pre.target (which sway does not
+	# provide) and the wayland-session targets are still installed from here.
+	rm -f "${pkgdir}/usr/lib/systemd/user/sway-session.target"
 	install -D -m 0644 "${srcdir}/${_pkgname}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
