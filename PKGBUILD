@@ -4,7 +4,7 @@ _pkgname=sway-services
 pkgname=${_pkgname}
 pkgdesc="Collection of sway and friends systemd unit files"
 pkgver=r33.e3d9b8b
-pkgrel=5
+pkgrel=6
 arch=(any)
 depends=('sway' 'python3' 'python-yaml' 'swayidle')
 makedepends=('meson')
@@ -34,20 +34,5 @@ build() {
 
 package() {
 	DESTDIR="${pkgdir}" ninja -C "${srcdir}/build" install
-	# sway >=1.12 ships its own /usr/lib/systemd/user/sway-session.target,
-	# which collides with the copy from upstream sway-services. Drop ours and
-	# let the sway package own it; sway-session-pre.target (which sway does not
-	# provide) and the wayland-session targets are still installed from here.
-	rm -f "${pkgdir}/usr/lib/systemd/user/sway-session.target"
-	# sway's sway-session.target binds only to graphical-session.target, so the
-	# wayland-session layer (way-displays, swayidle, ...) is no longer pulled up
-	# atomically at sway start and lags several seconds behind. Re-add the
-	# wayland-session.target wiring our dropped copy used to carry.
-	install -d "${pkgdir}/usr/lib/systemd/user/sway-session.target.d"
-	printf '%s\n' \
-		'[Unit]' \
-		'BindsTo=wayland-session.target' \
-		'Before=wayland-session.target' \
-		> "${pkgdir}/usr/lib/systemd/user/sway-session.target.d/10-wayland-session.conf"
 	install -D -m 0644 "${srcdir}/${_pkgname}/LICENSE" "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE"
 }
