@@ -17,7 +17,7 @@ jobs:
       pull-requests: write
     steps:
       - name: checkout
-        uses: actions/checkout@e8d4307400f9427dba7cb98e488d6ab85f1cec5f # main
+        uses: actions/checkout@f548e57e544e1ff5a4c46bf1e1b8685f8e4a348a # main
         with:
           token: ${{ secrets.BOOTSTRAP_WORKFLOWS || github.token }}
       - run: yq '.repository.topics = "arch, package"' -i .github/settings.yml
